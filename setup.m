@@ -22,7 +22,7 @@ simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a v
 
 % Vettore degli istanti campionati
 simulation.time = ...
-0 : 2*pi/simulation.omega/simulation.samples : 2*pi*(simulation.steps - 1)/simulation.omega/simulation.samples;
+0 : 2*pi/simulation.omega/simulation.samples : 2*pi*(simulation.samples - 1)/simulation.omega/simulation.samples;
 
 
 %% Dati della traccia
