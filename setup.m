@@ -36,8 +36,8 @@ E.x = 0.40;  E.y = 0.40; % Coordinate del punto E
 
 % Si sceglie arbitrariamente la posizione dei punti F e G
 
-F.x = 1.00;  F.y = 0.40; % Coordinate del punto F
-G.x = 1.00;  G.y = 0.00; % Coordinate del punto G
+F.x = 0.60;  F.y = 0.40; % Coordinate del punto F
+G.x = 0.60;  G.y = 0.00; % Coordinate del punto G
 
 
 %% Inizializzazione variabili dei membri
@@ -67,7 +67,10 @@ GC = vettore(G,C); % Vettore GC: telaio
 % Si calcola il vettore della fase della manovella per ogni istante di campionamento
 CB.f = simulation.time*simulation.omega; % Velocità angolare della manovella
 
+%% Utilità
 
+% Opzioni per il solver dei sistemi lineari
+fsolve_options = optimset('Display','off');
 
 
 
