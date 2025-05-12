@@ -31,7 +31,7 @@ O.x = 0.00;  O.y = 0.00; % Coordinate del punto O
 A.x =-0.10;  A.y = 0.20; % Coordinate del punto A
 B.x = 0.20;  B.y = 0.15; % Coordinate del punto B
 C.x = 0.20;  C.y = 0.10; % Coordinate del punto C
-D.x = 0.40;  D.y = 0.60; % Coordinate del punto D
+D.x = 0.00;  D.y = 0.60; % Coordinate del punto D
 E.x = 0.40;  E.y = 0.40; % Coordinate del punto E
 
 % Si sceglie arbitrariamente la posizione dei punti F e G
