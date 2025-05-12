@@ -21,6 +21,8 @@ chiusura = @(x,z1,z2,z3,z4,z5,z6,z8,z9,f2,f3,f7,f8,f9)[
     z3*sin(f3) + z4*sin(x(2)) + z5*sin(x(1) + OAD) + z6*sin(x(3)) + x(4)*sin(f7) + z8*sin(f8) + z9*sin(f9)
 ];
 
+%% Analisi di posizione
+
 % Ciclo for per la soluzione delle equazioni di chiusura in ogni configurazione del sistema
 x0 = [AO.f, BA.f, DE.f, EF.z];  % Vettore dei valori di guess iniziale per le incognite
 
@@ -37,3 +39,21 @@ for k1 = 1:simulation.samples
     DE.f(k1) = x(3);
     EF.z(k1) = x(4);
 end
+
+%% Analisi di velocità
+
+AO.fp = deriv3(AO.f,simulation.time);
+CB.fp = deriv3(CB.f,simulation.time);
+BA.fp = deriv3(BA.f,simulation.time);
+AD.fp = AO.fp;
+DE.fp = deriv3(DE.f,simulation.time);
+EF.zp = deriv3(EF.z,simulation.time);
+
+%% Analisi di accelerazione
+
+AO.fpp = deriv3(AO.fp,simulation.time);
+CB.fpp = deriv3(CB.fp,simulation.time);
+BA.fpp = deriv3(BA.fp,simulation.time);
+AD.fpp = AO.fpp;
+DE.fpp = deriv3(DE.fp,simulation.time);
+EF.zpp = deriv3(EF.zp,simulation.time);
