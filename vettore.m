@@ -2,14 +2,19 @@
 % La funzione permette di calcolare la lunghezza e l'angolo di un vettore
 % a partire dalle coordinate del punto iniziale e finale.
 
-function [v,z,f] = vettore(p1,p2)
+% INPUT:
+% p1: punto iniziale del vettore
+% p2: punto finale del vettore
+
+% OUTPUT:
+% v: struttura che contiene la lunghezza e l'angolo del vettore
+% v.z: lunghezza del vettore
+% v.f: angolo del vettore in radianti
+
+function v = vettore(p1,p2)
     % Calcolo della lunghezza del vettore
-    z = sqrt((p2.x - p1.x)^2 + (p2.y - p1.y)^2);
+    v.z = sqrt((p2.x - p1.x)^2 + (p2.y - p1.y)^2);
     
     % Calcolo dell'angolo del vettore
-    f = atan2(p2.y - p1.y, p2.x - p1.x);
-    
-    % Creazione della struttura del vettore
-    v.z = z;
-    v.f = f;
+    v.f = atan2(p2.y - p1.y, p2.x - p1.x);
 end
