@@ -31,14 +31,13 @@ O.x = 0.00;  O.y = 0.00; % Coordinate del punto O
 A.x =-0.10;  A.y = 0.20; % Coordinate del punto A
 B.x = 0.20;  B.y = 0.15; % Coordinate del punto B
 C.x = 0.20;  C.y = 0.10; % Coordinate del punto C
-D.x = 0.40;  D.y = 0.60; % Coordinate del punto D
+D.x = 0.00;  D.y = 0.60; % Coordinate del punto D
 E.x = 0.40;  E.y = 0.40; % Coordinate del punto E
 
 % Si sceglie arbitrariamente la posizione dei punti F e G
 
-F.x = 0.60;  F.y = 0.40; % Coordinate del punto F
-G.x = 0.60;  G.y = 0.00; % Coordinate del punto G
-
+F.x = 0.70;  F.y = 0.40; % Coordinate del punto F
+G.x = 0.70;  G.y = 0.10; % Coordinate del punto G
 
 %% Inizializzazione variabili dei membri
 
@@ -66,11 +65,21 @@ GC = vettore(G,C); % Vettore GC: telaio
 
 % Si calcola il vettore della fase della manovella per ogni istante di campionamento
 CB.f = simulation.time*simulation.omega; % Velocità angolare della manovella
+% Si aumenta l'inclinazione della manovella per cominciare l'animazione con la semicorsa positiva
+CB.f = CB.f + pi;
 
 %% Utilità
 
-% Opzioni per il solver dei sistemi lineari
-fsolve_options = optimset('Display','off');
+simulation.fsolve_options = optimset('Display','off'); % Opzioni per il solver dei sistemi lineari
+simulation.animation_fig_id = 1; % ID della figura per l'animazione
+
+color.CB = "#EDB120"; % Colore del membro CB
+color.BA = "#4DBEEE"; % Colore del membro BA
+color.AO = "#A2142F"; % Colore del membro AO
+color.AD = "#A2142F"; % Colore del membro AD
+color.DE = "#0072BD"; % Colore del membro DE
+color.telaio = "#FFFFFF"; % Colore del telaio
+
 
 
 

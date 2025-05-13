@@ -29,7 +29,7 @@ x0 = [AO.f, BA.f, DE.f, EF.z];  % Vettore dei valori di guess iniziale per le in
 for k1 = 1:simulation.samples
 
     x = fsolve(@(x) chiusura(x, AO.z, OC.z, CB.z, BA.z, AD.z, DE.z, FG.z, GC.z, ...
-        OC.f, CB.f(k1), EF.f, FG.f, GC.f), x0, fsolve_options);
+        OC.f, CB.f(k1), EF.f, FG.f, GC.f), x0, simulation.fsolve_options);
 
     x0 = x; % Aggiorna il valore di guess iniziale per la prossima iterazione
     
