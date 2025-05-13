@@ -15,7 +15,6 @@ clc % Pulisce la finestra dei comandi
 
 simulation.omega  = 1;      % [rad/s]   Velocità angolare della manovella
 simulation.samples = 100;   % [adim.]   Campioni per un giro di manovella
-simulation.M = 1;           % [kg]      Massa del pacco
 simulation.g = 9.81;        % [m/s^2]   Accelerazione di gravità
 simulation.f_cou = 0.01;    % [adim.]   Coefficiente di attrito radente tra pacco e telaio
 simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a vuoto (senza scatola)
@@ -23,7 +22,6 @@ simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a v
 % Vettore degli istanti campionati
 simulation.time = ...
 0 : 2*pi/simulation.omega/simulation.samples : 2*pi*(simulation.samples - 1)/simulation.omega/simulation.samples;
-
 
 %% Dati della traccia
 
@@ -34,6 +32,8 @@ C.x = 0.20;  C.y = 0.10; % Coordinate del punto C
 D.x = 0.00;  D.y = 0.60; % Coordinate del punto D
 E.x = 0.40;  E.y = 0.40; % Coordinate del punto E
 
+pacco.m = 1;       % [kg]      Massa del pacco
+pacco.side = 0.20;  % [m]      Lato del pacco
 % Si sceglie arbitrariamente la posizione dei punti F e G
 
 F.x = 0.70;  F.y = 0.40; % Coordinate del punto F

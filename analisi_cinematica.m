@@ -57,3 +57,29 @@ BA.fpp = deriv3(BA.fp,simulation.time);
 AD.fpp = AO.fpp;
 DE.fpp = deriv3(DE.fp,simulation.time);
 EF.zpp = deriv3(EF.zp,simulation.time);
+
+%% Studio della cinematica del pacco
+
+% Il pattino incontra il pacco dopo una certa frazione di corsa,
+% specifica nel file di setup. Calcoliamo quindi la posizione iniziale
+% del pacco in funzione della corsa del pattino
+
+% Si studia la posizione del punto del pacco in basso a sinistra
+
+E.x = F.x - EF.z;
+E.PMS = max(E.x);
+E.PMI = min(E.x);
+EF.corsa = E.PMS - E.PMI; % [m] Lungghezza della corsa del pattino 
+
+pacco.y = E.y - pacco.side/2; % [m] Posizione iniziale del pacco
+pacco.x(1) = E.PMI + simulation.p*EF.corsa; % [m] Posizione iniziale del pacco
+
+for k3 = 2:simulation.samples
+    % Si calcola la posizione del pacco in funzione della corsa del pattino
+    if(E.x(k3) < pacco.x(k3-1))
+        pacco.x(k3) = pacco.x(k3-1);
+    else
+        pacco.x(k3) = E.x(k3);
+    end
+    % Si calcola l'accelerazione del pacco in funzione dell'accelerazione del
+end

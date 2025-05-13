@@ -8,14 +8,14 @@
 % OUTPUT:
 % dv: derivata del vettore
 
-function dv = deriv3(y,t)
+function dy = deriv3(y,t)
     N=length(t);
-    dv=zeros(N,1);
+    dy=zeros(N,1);
 
-    for k = 2:length(v)
-        dv(k) = (y(k+1) - y(k-1)) / (t(k+1) - t(k-1));
+    for k = 2:length(y)-1
+        dy(k) = (y(k+1) - y(k-1)) / (t(k+1) - t(k-1));
     end
  
-    dv(1) = (y(2) - y(1)) / (t(2) - t(1));      %primo elemento con forward-Euler
-    dv(N) = (y(N) - y(N-1)) / (t(N)-t(N-1));    %ultimo elemento con backward-Euler
+    dy(1) = (y(2) - y(1)) / (t(2) - t(1));      %primo elemento con forward-Euler
+    dy(N) = (y(N) - y(N-1)) / (t(N)-t(N-1));    %ultimo elemento con backward-Euler
 end
