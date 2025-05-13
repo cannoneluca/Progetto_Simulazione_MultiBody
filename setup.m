@@ -18,6 +18,7 @@ simulation.samples = 100;   % [adim.]   Campioni per un giro di manovella
 simulation.g = 9.81;        % [m/s^2]   Accelerazione di gravità
 simulation.f_cou = 0.01;    % [adim.]   Coefficiente di attrito radente tra pacco e telaio
 simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a vuoto (senza scatola)
+simulation.H = 0.5;        % [m]       Corsa del pattino desiderata
 
 % Vettore degli istanti campionati
 simulation.time = ...

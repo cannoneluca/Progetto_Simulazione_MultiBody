@@ -23,7 +23,7 @@ E.y = D.y + DE.z*sin(DE.f);
 figure(simulation.animation_fig_id);
 title("Animazione del meccanismo");
 axis equal;
-axis([-0.2 1 -0.2 0.8]);
+axis([-0.4 1 -0.2 0.8]);
 grid off;
 hold on;
 xlabel("x [m]");
@@ -65,3 +65,5 @@ for k2 = 1:simulation.samples
     % Salva il frame per il filmato
     movie(:, k2) = getframe(simulation.animation_fig_id);
 end
+
+clear h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11;

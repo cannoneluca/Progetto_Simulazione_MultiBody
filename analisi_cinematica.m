@@ -1,4 +1,4 @@
-OAD = AD.f - AO.f; % [rad] Angolo compreso tra i membri AD e OF, costante
+OAD = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
 
 % per conoscere la posizione dei singoli membri per ogni configurazione del sistema
 % si risolve un sistema ottenuto attraverso le equazioni di chiusura del sistema
@@ -24,7 +24,7 @@ chiusura = @(x,z1,z2,z3,z4,z5,z6,z8,z9,f2,f3,f7,f8,f9)[
 %% Analisi di posizione
 
 % Ciclo for per la soluzione delle equazioni di chiusura in ogni configurazione del sistema
-x0 = [AO.f, BA.f, DE.f, EF.z];  % Vettore dei valori di guess iniziale per le incognite
+x0 = [AO.f(1), BA.f(1), DE.f(1), EF.z(1)];  % Vettore dei valori di guess iniziale per le incognite
 
 for k1 = 1:simulation.samples
 
@@ -74,12 +74,14 @@ EF.corsa = E.PMS - E.PMI; % [m] Lungghezza della corsa del pattino
 pacco.y = E.y - pacco.side/2; % [m] Posizione iniziale del pacco
 pacco.x(1) = E.PMI + simulation.p*EF.corsa; % [m] Posizione iniziale del pacco
 
-for k3 = 2:simulation.samples
+for k2 = 2:simulation.samples
     % Si calcola la posizione del pacco in funzione della corsa del pattino
-    if(E.x(k3) < pacco.x(k3-1))
-        pacco.x(k3) = pacco.x(k3-1);
+    if(E.x(k2) < pacco.x(k2-1))
+        pacco.x(k2) = pacco.x(k2-1);
     else
-        pacco.x(k3) = E.x(k3);
+        pacco.x(k2) = E.x(k2);
     end
     % Si calcola l'accelerazione del pacco in funzione dell'accelerazione del
 end
+
+clear x x0 k1 chiusura;
