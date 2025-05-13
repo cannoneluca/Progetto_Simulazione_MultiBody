@@ -84,4 +84,7 @@ for k2 = 2:simulation.samples
     % Si calcola l'accelerazione del pacco in funzione dell'accelerazione del
 end
 
+pacco.xp = deriv3(pacco.x,simulation.time); % [m/s] Velocità del pacco
+pacco.xpp = deriv3(pacco.xp,simulation.time); % [m/s^2] Accelerazione del pacco
+
 clear x x0 k1 chiusura;
