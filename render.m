@@ -20,10 +20,10 @@ E.x = D.x + DE.z*cos(DE.f);
 E.y = D.y + DE.z*sin(DE.f);
 
 %% Figura per l'animazione
-figure(animation_fig_id);
+figure(simulation.animation_fig_id);
 title("Animazione del meccanismo");
 axis equal;
-axis([-0.2 0.8 -0.2 0.8]);
+axis([-0.2 1 -0.2 0.8]);
 grid off;
 hold on;
 xlabel("x [m]");
@@ -40,7 +40,8 @@ h3 = line([C.x(1) B.x(1)], [C.y(1) B.y(1)], 'color', color.CB, 'LineWidth', 2);
 h4 = line([B.x(1) A.x(1)], [B.y(1) A.y(1)], 'color', color.BA, 'LineWidth', 2);
 h5 = line([A.x(1) D.x(1)], [A.y(1) D.y(1)], 'color', color.AD, 'LineWidth', 2);
 h6 = line([D.x(1) E.x(1)], [D.y(1) E.y(1)], 'color', color.DE, 'LineWidth', 2);
-h10 = line([E.x(1) E.x(1)], [E.y(1) + 0.05 E.y(1) - 0.05], 'color', color_DE, 'LineWidth', 2);
+h10 = line([E.x(1) E.x(1)], [E.y(1) + 0.05 E.y(1) - 0.05], 'color', color.DE, 'LineWidth', 2);
+h11 = rectangle('Position',[pacco.x(1) pacco.y pacco.side pacco.side], 'FaceColor', color.pacco, 'EdgeColor', color.pacco, 'LineWidth', 2);
 
 %% Animazione
 
@@ -57,10 +58,10 @@ for k2 = 1:simulation.samples
     set(h4, 'XData', [B.x(k2) A.x(k2)], 'YData', [B.y(k2) A.y(k2)]);
     set(h5, 'XData', [A.x(k2) D.x(k2)], 'YData', [A.y(k2) D.y(k2)]);
     set(h10, 'XData', [E.x(k2) E.x(k2)], 'YData', [E.y(k2) + 0.05 E.y(k2) - 0.05]);
-    
+    set(h11, 'Position', [pacco.x(k2) pacco.y pacco.side pacco.side]);
     % Aggiorna la figura
     drawnow;
     
     % Salva il frame per il filmato
-    movie(:, k2) = getframe(animation_fig_id);
+    movie(:, k2) = getframe(simulation.animation_fig_id);
 end

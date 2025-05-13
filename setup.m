@@ -4,7 +4,7 @@
 
 %% Pulizia dell'ambiente di lavoro
 
-clear workspace % Elimina le variabili presenti nel workspace
+clearvars; % Elimina le variabili presenti nel workspace
 close all % Chiude tutte le figure aperte
 clc % Pulisce la finestra dei comandi
 
@@ -79,6 +79,7 @@ color.AO = "#A2142F"; % Colore del membro AO
 color.AD = "#A2142F"; % Colore del membro AD
 color.DE = "#0072BD"; % Colore del membro DE
 color.telaio = "#FFFFFF"; % Colore del telaio
+color.pacco = "#7E2F8E"; % Colore del pacco
 
 
 
