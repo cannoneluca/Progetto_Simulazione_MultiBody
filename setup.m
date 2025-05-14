@@ -22,7 +22,7 @@ simulation.H = 0.5;        % [m]       Corsa del pattino desiderata
 
 % Vettore degli istanti campionati
 simulation.time = ...
-0 : 2*pi/simulation.omega/simulation.samples : 2*pi*(simulation.samples - 1)/simulation.omega/simulation.samples;
+(0 : 2*pi/simulation.omega/simulation.samples : 2*pi*(simulation.samples - 1)/simulation.omega/simulation.samples)';
 
 %% Dati della traccia
 

@@ -33,11 +33,11 @@ for k1 = 1:simulation.samples
 
     x0 = x; % Aggiorna il valore di guess iniziale per la prossima iterazione
     
-    AO.f(k1) = x(1);
-    BA.f(k1) = x(2);
-    AD.f(k1) = AO.f(k1) + OAD;
-    DE.f(k1) = x(3);
-    EF.z(k1) = x(4);
+    AO.f(k1,1) = x(1);
+    BA.f(k1,1) = x(2);
+    AD.f(k1,1) = AO.f(k1,1) + OAD;
+    DE.f(k1,1) = x(3);
+    EF.z(k1,1) = x(4);
 end
 
 %% Analisi di velocità
@@ -72,14 +72,14 @@ E.PMI = min(E.x);
 EF.corsa = E.PMS - E.PMI; % [m] Lungghezza della corsa del pattino 
 
 pacco.y = E.y - pacco.side/2; % [m] Posizione iniziale del pacco
-pacco.x(1) = E.PMI + simulation.p*EF.corsa; % [m] Posizione iniziale del pacco
+pacco.x(1,1) = E.PMI + simulation.p*EF.corsa; % [m] Posizione iniziale del pacco
 
 for k2 = 2:simulation.samples
     % Si calcola la posizione del pacco in funzione della corsa del pattino
     if(E.x(k2) < pacco.x(k2-1))
-        pacco.x(k2) = pacco.x(k2-1);
+        pacco.x(k2,1) = pacco.x(k2-1,1);
     else
-        pacco.x(k2) = E.x(k2);
+        pacco.x(k2,1) = E.x(k2);
     end
     % Si calcola l'accelerazione del pacco in funzione dell'accelerazione del
 end
