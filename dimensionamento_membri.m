@@ -50,7 +50,7 @@ CB.Wf = catalogo_sezioni(index,5);
 CB.m = CB.area*material.rho*CB.z;
 CB.J_C = (CB.m*CB.z^2)/12; % Momento d'inerzia rispetto al CIR
 
-% Per il membro DE
+% Dimensionamento del membro DE:
 
 y(1,1) = -force.F_Dx(simulation.max_stress_index);
 y(2,1) = -force.F_Dy(simulation.max_stress_index);
@@ -67,6 +67,16 @@ x = rot(DE.f(simulation.max_stress_index))*y;
 
 DE.F_Ex = x(1);
 DE.F_Ey = x(2);
+
+% [~, index] = min(abs(catalogo_sezioni(:,3) - CB.Wf));
+index = 1;
+
+DE.lato = catalogo_sezioni(index,1);
+DE.spessore = catalogo_sezioni(index,2);
+DE.area = catalogo_sezioni(index,3);
+DE.Wf = catalogo_sezioni(index,5);
+DE.m = DE.area*material.rho*DE.z;
+DE.J_C = (DE.m*DE.z^2)/12; % Momento d'inerzia rispetto al CIR
 
 % Per il membro BA:
 
@@ -96,6 +106,72 @@ BA.area = catalogo_sezioni(index,3);
 BA.Wf = catalogo_sezioni(index,5);
 BA.m = BA.area*material.rho*BA.z;
 BA.J = (BA.m*BA.z^2)/12; % Momento d'inerzia rispetto al Centro di massa
+
+% Per il membro OAD si considera il membro rettificato, con applicate esclusivamente
+% le forze lungo x:
+
+y(1,1) = -force.F_Ox(simulation.max_stress_index);
+y(2,1) = -force.F_Oy(simulation.max_stress_index);
+
+x = rot(AO.f(simulation.max_stress_index))*y;
+
+AO.F_Ox = x(1);
+AO.F_Oy = x(2);
+
+y(1,1) = -force.F_Ox(simulation.max_stress_index);
+y(2,1) = -force.F_Oy(simulation.max_stress_index);
+
+y(1,1) = -force.F_Ax(simulation.max_stress_index);
+y(2,1) = -force.F_Ay(simulation.max_stress_index);
+
+x = rot(AO.f(simulation.max_stress_index))*y;
+
+AO.F_Ax = x(1);
+AO.F_Ay = x(2);
+
+
+
+y(1,1) = -force.F_Ax(simulation.max_stress_index);
+y(2,1) = -force.F_Ay(simulation.max_stress_index);
+
+x = rot(AD.f(simulation.max_stress_index))*y;
+
+AD.F_Ax = x(1);
+AD.F_Ay = x(2);
+
+y(1,1) = -force.F_Dx(simulation.max_stress_index);
+y(2,1) = -force.F_Dy(simulation.max_stress_index);
+
+x = rot(AD.f(simulation.max_stress_index))*y;
+
+AD.F_Dx = x(1);
+AD.F_Dy = x(2);
+
+OAD.l = (0:simulation.prec:(AO.z + AD.z))';
+OAD.Mf = AO.F_Oy.*OAD.l - AD.F_Ay.*(OAD.l - AO.z).*(OAD.l > AO.z);
+
+OAD.Wf = max(OAD.Mf)/material.sigma*simulation.safety;
+
+[~, index] = min(abs(catalogo_sezioni(:,3) - OAD.Wf));
+
+OAD.lato = catalogo_sezioni(index,1);
+OAD.spessore = catalogo_sezioni(index,2);
+OAD.area = catalogo_sezioni(index,3);
+OAD.Wf = catalogo_sezioni(index,5);
+
+AO.lato = OAD.lato;
+AO.spessore = OAD.spessore;
+AO.area = OAD.area;
+AO.Wf = OAD.Wf;
+AO.m = AO.area*material.rho*AO.z;
+AO.J_O = (AO.m*AO.z^2)/3; % Momento d'inerzia rispetto al CIR
+
+AD.lato = OAD.lato;
+AD.spessore = OAD.spessore;
+AD.area = OAD.area;
+AD.Wf = OAD.Wf;
+AD.m = AD.area*material.rho*AD.z;
+AD.J = (AD.m*AD.z^2)/12; % Momento d'inerzia rispetto al centro di massa
 
 
 % Per tale dimensionamento si sono trascurati gli effetti dovuti alla presenza di intagli

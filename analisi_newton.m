@@ -47,22 +47,21 @@ for k4 = 1:simulation.samples
     % La matrice A è la matrice dei coefficienti delle incognite, che in questo caso sono le forze
     % scambiate sulle coppie rotoidali che costituiscono il meccanismo articolato
 
-    matA= [1 0 1 0 0 0 0 0 1 0 0; 
-        0 1 0 1 0 0 0 0 0 1 0;
-        0 0 1 0 1 0 0 0 0 0 0;
-        0 0 0 1 0 1 0 0 0 0 0;
-        0 0 (-BA.z*sin(BA.f(k4))) (BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
-        0 0 0 0 1 0 1 0 0 0 0; 
-        0 0 0 0 0 1 0 1 0 0 0;
-        0 0 0 0 (CB.z*sin(CB.f(k4))) (-CB.z*cos(CB.f(k4))) 0 0 0 0 0;
-        0 0 0 0 0 0 0 0 1 0 0;
-        0 0 0 0 0 0 0 0 0 -1 1;
-        0 0 0 0 0 0 0 0 DE.z*sin(DE.f(k4)) -DE.z*cos(DE.f(k4)) 0];
+    matA=  [1 0 1 0 0 0 0 0 1 0 0; 
+            0 1 0 1 0 0 0 0 0 1 0;
+            0 0 1 0 1 0 0 0 0 0 0;
+            0 0 0 1 0 1 0 0 0 0 0;
+            0 0 (-BA.z*sin(BA.f(k4))) (BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
+            0 0 0 0 1 0 1 0 0 0 0; 
+            0 0 0 0 0 1 0 1 0 0 0;
+            0 0 0 0 (CB.z*sin(CB.f(k4))) (-CB.z*cos(CB.f(k4))) 0 0 0 0 0;
+            0 0 0 0 0 0 0 0 1 0 0;
+            0 0 0 0 0 0 0 0 0 -1 1;
+            0 0 0 0 0 0 0 0 DE.z*sin(DE.f(k4)) -DE.z*cos(DE.f(k4)) 0];
 
 % La matrice B è la matrice dei termini noti, che in questo caso sono le forze esterne
 
     matB = [0 0 0 0 0 0 0 force.C(k4) force.Fr(k4) 0 0]';
-
     matC = matA\matB;
 
     force.F_Ox(k4) = matC(1);

@@ -1,4 +1,4 @@
-OAD = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
+OAD.f = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
 
 % per conoscere la posizione dei singoli membri per ogni configurazione del sistema
 % si risolve un sistema ottenuto attraverso le equazioni di chiusura del sistema
@@ -17,8 +17,8 @@ OAD = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
 chiusura = @(x,z1,z2,z3,z4,z5,z6,z8,z9,f2,f3,f7,f8,f9)[
     z1*cos(x(1)) + z2*cos(f2) + z3*cos(f3) + z4*cos(x(2))
     z1*sin(x(1)) + z2*sin(f2) + z3*sin(f3) + z4*sin(x(2))
-    z3*cos(f3) + z4*cos(x(2)) + z5*cos(x(1) + OAD) + z6*cos(x(3)) + x(4)*cos(f7) + z8*cos(f8) + z9*cos(f9)
-    z3*sin(f3) + z4*sin(x(2)) + z5*sin(x(1) + OAD) + z6*sin(x(3)) + x(4)*sin(f7) + z8*sin(f8) + z9*sin(f9)
+    z3*cos(f3) + z4*cos(x(2)) + z5*cos(x(1) + OAD.f) + z6*cos(x(3)) + x(4)*cos(f7) + z8*cos(f8) + z9*cos(f9)
+    z3*sin(f3) + z4*sin(x(2)) + z5*sin(x(1) + OAD.f) + z6*sin(x(3)) + x(4)*sin(f7) + z8*sin(f8) + z9*sin(f9)
 ];
 
 %% Analisi di posizione
@@ -35,7 +35,7 @@ for k1 = 1:simulation.samples
     
     AO.f(k1,1) = x(1);
     BA.f(k1,1) = x(2);
-    AD.f(k1,1) = AO.f(k1,1) + OAD;
+    AD.f(k1,1) = AO.f(k1,1) + OAD.f;
     DE.f(k1,1) = x(3);
     EF.z(k1,1) = x(4);
 end
