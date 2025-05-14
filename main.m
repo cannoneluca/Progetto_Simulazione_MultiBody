@@ -7,3 +7,7 @@ analisi_dinamica();
 analisi_newton();
 importa_catalogo_sezioni();
 dimensionamento_membri();
+analisi_dinamica2();
+importa_catalogo_riduttori();
+dimensionamento_riduttore();
+

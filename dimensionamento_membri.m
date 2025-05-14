@@ -178,3 +178,5 @@ AD.J = (AD.m*AD.z^2)/12; % Momento d'inerzia rispetto al centro di massa
 
 % Per tale dimensionamento si sono trascurati gli effetti dovuti alla presenza di intagli
 % per poter ospitare le coppie rotoidali
+
+clear index x y

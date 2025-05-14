@@ -26,4 +26,4 @@ for k1 = 0:1:length(lato)-1
 end
 
 
-clear spessore lato k1
+clear spessore lato k1 i
