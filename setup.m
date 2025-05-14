@@ -18,7 +18,9 @@ simulation.samples = 100;   % [adim.]   Campioni per un giro di manovella
 simulation.g = 9.81;        % [m/s^2]   Accelerazione di gravità
 simulation.f_cou = 0.01;    % [adim.]   Coefficiente di attrito radente tra pacco e telaio
 simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a vuoto (senza scatola)
-simulation.H = 0.5;        % [m]       Corsa del pattino desiderata
+simulation.H = 0.5;         % [m]       Corsa del pattino desiderata
+simulation.prec = 0.01;      % [m] Precisione con cui eseguire dimensionamenti
+simulation.safety = 1.2;
 
 % Vettore degli istanti campionati
 simulation.time = ...
@@ -82,7 +84,15 @@ color.DE = "#0072BD"; % Colore del membro DE
 color.telaio = "#FFFFFF"; % Colore del telaio
 color.pacco = "#7E2F8E"; % Colore del pacco
 
+% si considera per il dimensionamento dei singoli membri un singoo materiale,
+% in questo caso del comune acciaio.
+% Si è scelto l'acciaio C45 perché si presta alle applicazioni in cuui i componenti sono chiamati
+% a subire carichi di tipo dimamico, laddove sia richiesta robustezza e flessibilità
 
+material.name = "Acciao al carbonio C45";
+material.E = 210e9;   % [GPa] Modulo di Young
+material.rho = 7870; % [kg/m^3] Densità
+material.sigma = 300e6; % [MPa] Resistenza allo snervamento
 
 
 

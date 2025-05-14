@@ -76,6 +76,7 @@ pacco.x(1,1) = E.PMI + simulation.p*EF.corsa; % [m] Posizione iniziale del pacco
 
 for k2 = 2:simulation.samples
     % Si calcola la posizione del pacco in funzione della corsa del pattino
+    % trascurando gli effetti della sua inerzia
     if(E.x(k2) < pacco.x(k2-1))
         pacco.x(k2,1) = pacco.x(k2-1,1);
     else

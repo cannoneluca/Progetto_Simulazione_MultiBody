@@ -15,5 +15,5 @@ force.Fr = (pacco.xp > 0).*(force.R) + pacco.xpp*pacco.m;
 force.C = force.Fr.*pacco.xp./CB.fp;
 
 % Si valuta il momento in cui la coppia è massima e si procede con il
-% dimensionamento dei membri in tale condizione
+% dimensionamento de
 [~, simulation.max_stress_index] = max(force.C);

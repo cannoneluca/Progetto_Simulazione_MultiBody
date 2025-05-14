@@ -51,7 +51,7 @@ for k4 = 1:simulation.samples
         0 1 0 1 0 0 0 0 0 1 0;
         0 0 1 0 1 0 0 0 0 0 0;
         0 0 0 1 0 1 0 0 0 0 0;
-        0 0 (-BA.z*sin(BA.f(k4))) (BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
+        0 0 (-BA.z*sin(BA.f(k4))) (-BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
         0 0 0 0 1 0 1 0 0 0 0; 
         0 0 0 0 0 1 0 1 0 0 0;
         0 0 0 0 (CB.z*sin(CB.f(k4))) (-CB.z*cos(CB.f(k4))) 0 0 0 0 0;
