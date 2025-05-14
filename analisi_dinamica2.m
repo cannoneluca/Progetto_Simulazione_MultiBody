@@ -1,0 +1,13 @@
+% analisi_dinamica.m
+
+% Implementa l'analisi dinamica del cinematismo applicando il principio dei lavori virtuali
+% partendo dai risultati dell'analisi cinematica e da quelli del dimensionamento dei singoli membri
+
+% I membri, questa volta dotati di massa, contribuiscono alla variazione della coppia
+% da applicare alla manovella
+
+force.C2 = (CB.J_C.*CB.fpp.*CB.fp + ...
+    BA.J.*BA.fpp.*BA.fp + BA.m.*BA.xpp.*BA.xp + BA.m.*BA.ypp.*BA.yp + ...
+    DE.J.*DE.fpp.*DE.fp + DE.m.*DE.xpp.*DE.xp + DE.m.*DE.ypp.*DE.yp + ...
+    OAD.J_O.*OAD.fpp.*OAD.fp + ...
+    pacco.m.*pacco.xpp.*pacco.xp)./CB.fp;

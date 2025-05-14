@@ -76,7 +76,7 @@ DE.spessore = catalogo_sezioni(index,2);
 DE.area = catalogo_sezioni(index,3);
 DE.Wf = catalogo_sezioni(index,5);
 DE.m = DE.area*material.rho*DE.z;
-DE.J_C = (DE.m*DE.z^2)/12; % Momento d'inerzia rispetto al CIR
+DE.J = (DE.m*DE.z^2)/12; % Momento d'inerzia rispetto al CIR
 
 % Per il membro BA:
 
@@ -147,7 +147,8 @@ x = rot(AD.f(simulation.max_stress_index))*y;
 AD.F_Dx = x(1);
 AD.F_Dy = x(2);
 
-OAD.l = (0:simulation.prec:(AO.z + AD.z))';
+OAD.z = AO.z + AD.z;
+OAD.l = (0:simulation.prec:OAD.z)';
 OAD.Mf = AO.F_Oy.*OAD.l - AD.F_Ay.*(OAD.l - AO.z).*(OAD.l > AO.z);
 
 OAD.Wf = max(OAD.Mf)/material.sigma*simulation.safety;
@@ -158,6 +159,8 @@ OAD.lato = catalogo_sezioni(index,1);
 OAD.spessore = catalogo_sezioni(index,2);
 OAD.area = catalogo_sezioni(index,3);
 OAD.Wf = catalogo_sezioni(index,5);
+OAD.m = OAD.area*material.rho*(AO.z + AD.z);
+OAD.J_O = (OAD.m*OAD.z^2)/3; % Momento d'inerzia rispetto al CIR
 
 AO.lato = OAD.lato;
 AO.spessore = OAD.spessore;
@@ -172,7 +175,6 @@ AD.area = OAD.area;
 AD.Wf = OAD.Wf;
 AD.m = AD.area*material.rho*AD.z;
 AD.J = (AD.m*AD.z^2)/12; % Momento d'inerzia rispetto al centro di massa
-
 
 % Per tale dimensionamento si sono trascurati gli effetti dovuti alla presenza di intagli
 % per poter ospitare le coppie rotoidali

@@ -35,9 +35,13 @@ for k1 = 1:simulation.samples
     
     AO.f(k1,1) = x(1);
     BA.f(k1,1) = x(2);
+    BA.x(k1,1) = C.x + CB.z*cos(CB.f(k1,1)) + BA.z/2*cos(BA.f(k1,1));
+    BA.y(k1,1) = C.y + CB.z*sin(CB.f(k1,1)) + BA.z/2*sin(BA.f(k1,1));
     AD.f(k1,1) = AO.f(k1,1) + OAD.f;
-    DE.f(k1,1) = x(3);
     EF.z(k1,1) = x(4);
+    DE.f(k1,1) = x(3);
+    DE.x(k1,1) = F.x - EF.z(k1,1) - DE.z/2*cos(DE.f(k1,1));
+    DE.y(k1,1) = F.y - DE.z/2*sin(DE.f(k1,1));
 end
 
 %% Analisi di velocità
@@ -45,8 +49,13 @@ end
 AO.fp = deriv3(AO.f,simulation.time);
 CB.fp = deriv3(CB.f,simulation.time);
 BA.fp = deriv3(BA.f,simulation.time);
+BA.xp = deriv3(BA.x,simulation.time);
+BA.yp = deriv3(BA.y,simulation.time);
 AD.fp = AO.fp;
+OAD.fp = AO.fp;
 DE.fp = deriv3(DE.f,simulation.time);
+DE.xp = deriv3(DE.x,simulation.time);
+DE.yp = deriv3(DE.y,simulation.time);
 EF.zp = deriv3(EF.z,simulation.time);
 
 %% Analisi di accelerazione
@@ -54,8 +63,13 @@ EF.zp = deriv3(EF.z,simulation.time);
 AO.fpp = deriv3(AO.fp,simulation.time);
 CB.fpp = deriv3(CB.fp,simulation.time);
 BA.fpp = deriv3(BA.fp,simulation.time);
+BA.xpp = deriv3(BA.xp,simulation.time);
+BA.ypp = deriv3(BA.yp,simulation.time);
 AD.fpp = AO.fpp;
+OAD.fpp = AO.fpp;
 DE.fpp = deriv3(DE.fp,simulation.time);
+DE.xpp = deriv3(DE.xp,simulation.time);
+DE.ypp = deriv3(DE.yp,simulation.time);
 EF.zpp = deriv3(EF.zp,simulation.time);
 
 %% Studio della cinematica del pacco
