@@ -11,7 +11,7 @@
 
 % Calcolo della forza di attrito radente associata alc ontatto tra il pacco e il telaio
 force.R = pacco.m*simulation.g*simulation.f_cou; % [N] Forza di attrito
-force.Fr = (pacco.xp > 0).*(force.R) + pacco.xpp*pacco.m;
+force.Fr = (pacco.xp > 0).*((force.R) + pacco.xpp*pacco.m.*(pacco.xpp > 0));
 force.C = force.Fr.*pacco.xp./CB.fp;
 
 % Si valuta il momento in cui la coppia è massima e si procede con il

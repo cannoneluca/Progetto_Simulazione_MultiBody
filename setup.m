@@ -14,7 +14,7 @@ clc % Pulisce la finestra dei comandi
 % dato che questa si muove di moto circolare uniforme
 
 simulation.omega  = 1;      % [rad/s]   Velocità angolare della manovella
-simulation.samples = 100;   % [adim.]   Campioni per un giro di manovella
+simulation.samples = 1000;  % [adim.]   Campioni per un giro di manovella
 simulation.g = 9.81;        % [m/s^2]   Accelerazione di gravità
 simulation.f_cou = 0.01;    % [adim.]   Coefficiente di attrito radente tra pacco e telaio
 simulation.p = 0.25;        % [adim.]   Frazione della corsa totale percorsa a vuoto (senza scatola)
@@ -68,6 +68,7 @@ GC = vettore(G,C); % Vettore GC: telaio
 
 % Si calcola il vettore della fase della manovella per ogni istante di campionamento
 CB.f = simulation.time*simulation.omega; % Velocità angolare della manovella
+CB.fp =deriv3(CB.f, simulation.time); % Velocità angolare della manovella
 % Si aumenta l'inclinazione della manovella per cominciare l'animazione con la semicorsa positiva
 CB.f = CB.f + pi;
 
@@ -75,6 +76,8 @@ CB.f = CB.f + pi;
 
 simulation.fsolve_options = optimset('Display','off'); % Opzioni per il solver dei sistemi lineari
 simulation.animation_fig_id = 1; % ID della figura per l'animazione
+simulation.motor_plot_id = 100; % ID della figura che ospita la curva caratteristica del motore
+% Ad ogni motore corrispinde un ID diverso, sommando a 100 l'ID del motore
 
 color.CB = "#EDB120"; % Colore del membro CB
 color.BA = "#4DBEEE"; % Colore del membro BA
@@ -94,7 +97,13 @@ material.E = 210e9;   % [GPa] Modulo di Young
 material.rho = 7870; % [kg/m^3] Densità
 material.sigma = 300e6; % [MPa] Resistenza allo snervamento
 
+% Impostiamo i parametri che simulino la presenza di un motore quando ancora non sarà determinato
 
+motore.Im = 0.005; % [Kg*m^2] Momento di inerzia del motore (prova)
+motore.cv = 0.0005; % [Kg*m^2/s] Coefficiente di attrito viscoso
+motore.ca = 0.2; % [Nm] % Coppia di attrito intrinseca del motore
+% Coppia di attrito intrinseca del motore, sempre opposta alla rotazione
+motore.C_a = ((CB.fp > 0) - (CB.fp <= 0))*motore.ca;
 
 
 

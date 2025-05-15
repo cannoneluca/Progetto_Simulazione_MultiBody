@@ -10,4 +10,5 @@ dimensionamento_membri();
 analisi_dinamica2();
 importa_catalogo_riduttori();
 dimensionamento_riduttore();
-
+importa_catalogo_motori();
+dimensionamento_motore();

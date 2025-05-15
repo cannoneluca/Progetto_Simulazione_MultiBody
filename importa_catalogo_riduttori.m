@@ -10,7 +10,8 @@
 % 3) Coppia media all'albero lento [Nm]
 % 4) Velocità massima all'albero veloce [rpm]
 % 5) Velocità nominale all'albero veloce [rpm]
-% 6) Rendimento [%]
+% 6) Rendimento moto diretto[%]
+% 7) Rendimento moto retrogrado [%]
 % 7) Momento di inerzia all'albero veloce [kg*m^2]
 
 i = [4 5 7 10]';
@@ -22,4 +23,5 @@ catalogo_riduttori(:,3) = [26 30 23 18 60 63 65 45 180 180 178 144 348 375 336 3
 catalogo_riduttori(:,4) = [ones(8,1)*6000; ones(12,1)*3000];
 catalogo_riduttori(:,5) = [3500 3500 4000 4000 2500 2500 3000 3000 2000 2000 2500 2500 2000 2000 2500 2500 1500 1500 2000 2000];
 catalogo_riduttori(:,6) = ones(20,1)*0.97;
-catalogo_riduttori(:,7) = [0.41 0.38 0.37 0.36 0.84 0.77 0.71 0.69 3.55 3.21 2.94 2.75 8.51 7.31 6.33 5.71 29.11 22.31 17.52 14.32]*1e-4;
+catalogo_riduttori(:,7) = (2 - 1./catalogo_riduttori(:,6));
+catalogo_riduttori(:,8) = [0.41 0.38 0.37 0.36 0.84 0.77 0.71 0.69 3.55 3.21 2.94 2.75 8.51 7.31 6.33 5.71 29.11 22.31 17.52 14.32]*1e-4;
