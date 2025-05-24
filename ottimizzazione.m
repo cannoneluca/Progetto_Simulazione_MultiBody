@@ -8,7 +8,10 @@
 disp("La corsa del pattino attualmente è: " + EF.corsa);
 
 CB.z = CB.z * simulation.H / EF.corsa; % Nuova lunghezza della manovella
-CB.z = round(CB.z/simulation.prec)*simulation.prec;
+
+% Arrotonda per eccesso la lunghezza della manovella per garantire la corsa
+% minima richiesta
+CB.z = ceil(CB.z/simulation.prec)*simulation.prec;
 analisi_cinematica();
 
 disp("La corsa del pattino attualmente è: " + EF.corsa);

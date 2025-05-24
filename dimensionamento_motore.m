@@ -26,13 +26,14 @@ for k6 = 1:length(catalogo_motori)
         motore.R = catalogo_motori(k6,11); % [Ohm]
         
         % ricalcoliamo la coppia richiesta al motore con l'inerzia del motore scelto
-        motore.C = motore.C_a + motore.cv*CB.fp/riduttore.tau + (motore.Im + riduttore.Im)*CB.fpp./riduttore.tau^2 + ...
+        motore.C = motore.C_a + motore.cv*CB.fp./riduttore.tau + (motore.Im + riduttore.Im)*CB.fpp./riduttore.tau + ...
                 riduttore.tau*riduttore.T2./riduttore.eta; % Coppia totale
 
         % vettore delle velocità con cui campionare le curve caratteristiche
         motore.omega = 0:round(motore.Max_Speed/simulation.safety);
 
-        % calcoliamo la coppia continua ammessa dal motore per ogni velocità, considerando un fattore di sicurezza del 20%
+        % calcoliamo la coppia continua ammessa dal motore per ogni
+        % velocità, considerando un fattore di sicurezza del 17%
 
         motore.coppia_continua = interp1([0 motore.Max_Speed/simulation.safety], ...
          [motore.Cont_Stall_Torque/simulation.safety ...
@@ -41,7 +42,6 @@ for k6 = 1:length(catalogo_motori)
 
         motore.coppia_picco = interp1([0 motore.Max_Torque_Speed/simulation.safety motore.Max_Speed/simulation.safety+1 motore.Max_Speed/simulation.safety+2 ], ... % 
         [motore.Peak_Stall_Torque/simulation.safety motore.Peak_Stall_Torque/simulation.safety motore.Max_Speed_Torque/simulation.safety 0], motore.omega); %motore.Max_Speed_Torque 0
-
 
         if(rms(motore.C) > motore.coppia_continua(round(abs(mean(motore.V)))+ 1*(round(abs(mean(motore.V))) == 0)))
             motore.OK = false;

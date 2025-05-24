@@ -51,17 +51,17 @@ for k4 = 1:simulation.samples
             0 1 0 1 0 0 0 0 0 1 0;
             0 0 1 0 1 0 0 0 0 0 0;
             0 0 0 1 0 1 0 0 0 0 0;
-            0 0 (-BA.z*sin(BA.f(k4))) (BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
+            0 0 (BA.z*sin(BA.f(k4))) (-BA.z*cos(BA.f(k4))) 0 0 0 0 0 0 0;
             0 0 0 0 1 0 1 0 0 0 0; 
             0 0 0 0 0 1 0 1 0 0 0;
             0 0 0 0 (CB.z*sin(CB.f(k4))) (-CB.z*cos(CB.f(k4))) 0 0 0 0 0;
             0 0 0 0 0 0 0 0 1 0 0;
             0 0 0 0 0 0 0 0 0 -1 1;
-            0 0 0 0 0 0 0 0 DE.z*sin(DE.f(k4)) -DE.z*cos(DE.f(k4)) 0];
+            0 0 0 0 0 0 0 0 0 0 1];
 
 % La matrice B è la matrice dei termini noti, che in questo caso sono le forze esterne
 
-    matB = [0 0 0 0 0 0 0 force.C(k4) force.Fr(k4) 0 0]';
+    matB = [0 0 0 0 0 0 0 force.C(k4) -force.Fr(k4) 0 -force.Fr(k4)*tan(DE.f(k4))]';
     matC = matA\matB;
 
     force.F_Ox(k4) = matC(1);

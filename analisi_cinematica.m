@@ -1,4 +1,4 @@
-OAD.f = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
+OAD.alfa = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costante
 
 % per conoscere la posizione dei singoli membri per ogni configurazione del sistema
 % si risolve un sistema ottenuto attraverso le equazioni di chiusura del sistema
@@ -17,8 +17,8 @@ OAD.f = AD.f(1) - AO.f(1); % [rad] Angolo compreso tra i membri AD e OF, costant
 chiusura = @(x,z1,z2,z3,z4,z5,z6,z8,z9,f2,f3,f7,f8,f9)[
     z1*cos(x(1)) + z2*cos(f2) + z3*cos(f3) + z4*cos(x(2))
     z1*sin(x(1)) + z2*sin(f2) + z3*sin(f3) + z4*sin(x(2))
-    z3*cos(f3) + z4*cos(x(2)) + z5*cos(x(1) + OAD.f) + z6*cos(x(3)) + x(4)*cos(f7) + z8*cos(f8) + z9*cos(f9)
-    z3*sin(f3) + z4*sin(x(2)) + z5*sin(x(1) + OAD.f) + z6*sin(x(3)) + x(4)*sin(f7) + z8*sin(f8) + z9*sin(f9)
+    z3*cos(f3) + z4*cos(x(2)) + z5*cos(x(1) + OAD.alfa) + z6*cos(x(3)) + x(4)*cos(f7) + z8*cos(f8) + z9*cos(f9)
+    z3*sin(f3) + z4*sin(x(2)) + z5*sin(x(1) + OAD.alfa) + z6*sin(x(3)) + x(4)*sin(f7) + z8*sin(f8) + z9*sin(f9)
 ];
 
 %% Analisi di posizione
@@ -33,12 +33,20 @@ for k1 = 1:simulation.samples
 
     x0 = x; % Aggiorna il valore di guess iniziale per la prossima iterazione
     
+    CB.x(k1,1) = C.x + CB.z*cos(CB.f(k1,1));
+    CB.y(k1,1) = C.y + CB.z*sin(CB.f(k1,1));
     AO.f(k1,1) = x(1);
     BA.f(k1,1) = x(2);
     BA.x(k1,1) = C.x + CB.z*cos(CB.f(k1,1)) + BA.z/2*cos(BA.f(k1,1));
     BA.y(k1,1) = C.y + CB.z*sin(CB.f(k1,1)) + BA.z/2*sin(BA.f(k1,1));
-    AD.f(k1,1) = AO.f(k1,1) + OAD.f;
+    AD.f(k1,1) = AO.f(k1,1) + OAD.alfa;
+    D.x = O.x + AO.z*cos(AO.f(k1) + pi) + AD.z*cos(AD.f(k1));
+    D.y = O.y + AO.z*sin(AO.f(k1) + pi) + AD.z*sin(AD.f(k1));
+    OAD.f(k1,1) = vettore(O,D).f;
+    OAD.x(k1,1) = OAD.z*cos(OAD.f(k1,1));
+    OAD.y(k1,1) = OAD.z*sin(OAD.f(k1,1));
     EF.z(k1,1) = x(4);
+    E.x(k1,1) = F.x - EF.z(k1,1);
     DE.f(k1,1) = x(3);
     DE.x(k1,1) = F.x - EF.z(k1,1) - DE.z/2*cos(DE.f(k1,1));
     DE.y(k1,1) = F.y - DE.z/2*sin(DE.f(k1,1));
@@ -48,29 +56,37 @@ end
 
 AO.fp = deriv3(AO.f,simulation.time);
 CB.fp = deriv3(CB.f,simulation.time);
+CB.xp = deriv3(CB.x,simulation.time);
+CB.yp = deriv3(CB.y,simulation.time);
 BA.fp = deriv3(BA.f,simulation.time);
 BA.xp = deriv3(BA.x,simulation.time);
 BA.yp = deriv3(BA.y,simulation.time);
 AD.fp = AO.fp;
 OAD.fp = AO.fp;
+OAD.xp = deriv3(OAD.x,simulation.time);
+OAD.yp = deriv3(OAD.y,simulation.time);
 DE.fp = deriv3(DE.f,simulation.time);
 DE.xp = deriv3(DE.x,simulation.time);
 DE.yp = deriv3(DE.y,simulation.time);
-EF.zp = deriv3(EF.z,simulation.time);
+E.xp = deriv3(E.x,simulation.time);
 
 %% Analisi di accelerazione
 
 AO.fpp = deriv3(AO.fp,simulation.time);
 CB.fpp = deriv3(CB.fp,simulation.time);
+CB.xpp = deriv3(CB.xp,simulation.time);
+CB.ypp = deriv3(CB.yp,simulation.time);
 BA.fpp = deriv3(BA.fp,simulation.time);
 BA.xpp = deriv3(BA.xp,simulation.time);
 BA.ypp = deriv3(BA.yp,simulation.time);
 AD.fpp = AO.fpp;
 OAD.fpp = AO.fpp;
+OAD.xpp = deriv3(OAD.xp,simulation.time);
+OAD.ypp = deriv3(OAD.yp,simulation.time);
 DE.fpp = deriv3(DE.fp,simulation.time);
 DE.xpp = deriv3(DE.xp,simulation.time);
 DE.ypp = deriv3(DE.yp,simulation.time);
-EF.zpp = deriv3(EF.zp,simulation.time);
+E.xpp = deriv3(E.xp,simulation.time);
 
 %% Studio della cinematica del pacco
 
@@ -80,7 +96,6 @@ EF.zpp = deriv3(EF.zp,simulation.time);
 
 % Si studia la posizione del punto del pacco in basso a sinistra
 
-E.x = F.x - EF.z;
 E.PMS = max(E.x);
 E.PMI = min(E.x);
 EF.corsa = E.PMS - E.PMI; % [m] Lungghezza della corsa del pattino 
@@ -101,5 +116,5 @@ end
 
 pacco.xp = deriv3(pacco.x,simulation.time); % [m/s] Velocità del pacco
 pacco.xpp = deriv3(pacco.xp,simulation.time); % [m/s^2] Accelerazione del pacco
-
+grafico_cinematica_pacco();
 clear x x0 k1 chiusura;

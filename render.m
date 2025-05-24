@@ -20,6 +20,10 @@ E.x = D.x + DE.z*cos(DE.f);
 E.y = D.y + DE.z*sin(DE.f);
 
 %% Figura per l'animazione
+
+% Chiude prima un eventuale finestra di animazione già aperta
+figure(simulation.animation_fig_id);
+close(simulation.animation_fig_id);
 figure(simulation.animation_fig_id);
 title("Animazione del meccanismo");
 axis equal;
@@ -43,9 +47,15 @@ h6 = line([D.x(1) E.x(1)], [D.y(1) E.y(1)], 'color', color.DE, 'LineWidth', 2);
 h10 = line([E.x(1) E.x(1)], [E.y(1) + 0.05 E.y(1) - 0.05], 'color', color.DE, 'LineWidth', 2);
 h11 = rectangle('Position',[pacco.x(1) pacco.y pacco.side pacco.side], 'FaceColor', color.pacco, 'EdgeColor', color.pacco, 'LineWidth', 2);
 
+% Rappresentaimo anche il piano di scorrimento del pacco
+
+line([E.PMI 1],[pacco.y pacco.y],'Color', 'k', 'LineWidth', 2);
+
 %% Animazione
 
-movie = moviein(simulation.samples);
+video =  VideoWriter("./media/animazione");
+open(video);
+
 for k2 = 1:simulation.samples
     % Aggiorna le posizioni dei punti
     set(h2, 'XData', [O.x C.x], 'YData', [O.y C.y]);
@@ -59,11 +69,12 @@ for k2 = 1:simulation.samples
     set(h5, 'XData', [A.x(k2) D.x(k2)], 'YData', [A.y(k2) D.y(k2)]);
     set(h10, 'XData', [E.x(k2) E.x(k2)], 'YData', [E.y(k2) + 0.05 E.y(k2) - 0.05]);
     set(h11, 'Position', [pacco.x(k2) pacco.y pacco.side pacco.side]);
-    % Aggiorna la figura
-    drawnow;
-    
-    % Salva il frame per il filmato
-    movie(:, k2) = getframe(simulation.animation_fig_id);
-end
 
+    img = getframe;
+    % Salva il frame per il filmato
+    writeVideo(video,img);
+end
+close(video);
+
+% Cancella tutte le variabili non utili per i prossimi programmi
 clear h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11;

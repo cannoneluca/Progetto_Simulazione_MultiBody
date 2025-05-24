@@ -1,3 +1,6 @@
+% Rimuove eventuali catlaoghi presenti
+clear catalogo_sezioni
+
 % Per il progetto si è scelto di considerare, per la realizzazione dei singoli
 % membri l'utilizzo di profilati scatolati in acciao, largamente in uso.
 

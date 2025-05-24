@@ -17,166 +17,199 @@
 % punto su cui agiscono. Si calcola l'andamento del momento flettente Mf, e
 % si ricava la sezione designata. 
 
+% Il dimensionamento è svolto considerando il carico di tipo statico,
+% trascurando quindi i carichi distribuiti e le inerzie del sistema
+
 % La sezione viene scelta da una tabella, ricavata da un catalogo delle
 % scatolati in acciaio
 
-% Per il membro CB:
-y(1,1) = force.F_Cx(simulation.max_stress_index);
-y(2,1) = force.F_Cy(simulation.max_stress_index);
+%% Scomposizione delle forze
+% Calcolo delle componenti normali e parallele a ciascun membro delle reazioni vincolari scambiate
 
-x = rot(CB.f(simulation.max_stress_index))*y;
+for k7 = 1:simulation.samples
+    y(1,1) = force.F_Cx(k7);
+    y(2,1) = force.F_Cy(k7);
+    x = rot(CB.f(k7))*y;
+    CB.F_Cx(k7) = x(1);
+    CB.F_Cy(k7) = x(2);
 
-CB.F_Cx = x(1);
-CB.F_Cy = x(2);
- 
-y(1,1) = force.F_Bx(simulation.max_stress_index);
-y(2,1) = force.F_By(simulation.max_stress_index);
+    y(1,1) = force.F_Bx(k7);
+    y(2,1) = force.F_By(k7);
+    x = rot(CB.f(k7))*y;
+    CB.F_Bx(k7) = x(1);
+    CB.F_By(k7) = x(2);
 
-x = rot(CB.f(simulation.max_stress_index))*y;
+    y(1,1) = -force.F_Bx(k7);
+    y(2,1) = -force.F_By(k7);
+    x = rot(BA.f(k7))*y;
+    BA.F_Bx(k7) = x(1);
+    BA.F_By(k7) = x(2);
 
-CB.F_Bx = x(1);
-CB.F_By = x(2);
+    y(1,1) = -force.F_Ax(k7);
+    y(2,1) = -force.F_Ay(k7);
+    x = rot(BA.f(k7))*y;
+    BA.F_Ax(k7) = x(1);
+    BA.F_Ay(k7) = x(2);
 
-CB.l = (0:simulation.prec:CB.z)';
-CB.Mf = force.C(simulation.max_stress_index) - CB.l*CB.F_Cy;
-CB.Wf = max(abs(CB.Mf)/material.sigma*simulation.safety);
+    y(1,1) = -force.F_Ox(k7);
+    y(2,1) = -force.F_Oy(k7);
+    x = rot(AO.f(k7))*y;
+    AO.F_Ox(k7) = x(1);
+    AO.F_Oy(k7) = x(2);
 
-[~, index] = min(abs(catalogo_sezioni(:,3) - CB.Wf));
+    y(1,1) = -force.F_Ax(k7);
+    y(2,1) = -force.F_Ay(k7);
+    x = rot(AO.f(k7))*y;
+    AO.F_Ax(k7) = x(1);
+    AO.F_Ay(k7) = x(2);
 
-CB.lato = catalogo_sezioni(index,1);
-CB.spessore = catalogo_sezioni(index,2);
-CB.area = catalogo_sezioni(index,3);
-CB.Wf = catalogo_sezioni(index,5);
-CB.m = CB.area*material.rho*CB.z;
-CB.J_C = (CB.m*CB.z^2)/12; % Momento d'inerzia rispetto al CIR
+    y(1,1) = -force.F_Ax(k7);
+    y(2,1) = -force.F_Ay(k7);
+    x = rot(AD.f(k7))*y;
+    AD.F_Ax(k7) = x(1);
+    AD.F_Ay(k7) = x(2);
 
-% Dimensionamento del membro DE:
+    y(1,1) = -force.F_Dx(k7);
+    y(2,1) = -force.F_Dy(k7);
+    x = rot(AD.f(k7))*y;
+    AD.F_Dx(k7) = x(1);
+    AD.F_Dy(k7) = x(2);
 
-y(1,1) = -force.F_Dx(simulation.max_stress_index);
-y(2,1) = -force.F_Dy(simulation.max_stress_index);
+    y(1,1) = -force.F_Dx(k7);
+    y(2,1) = -force.F_Dy(k7);
+    x = rot(DE.f(k7))*y;
+    DE.F_Dx(k7) = x(1);
+    DE.F_Dy(k7) = x(2);
 
-x = rot(DE.f(simulation.max_stress_index))*y;
+    y(1,1) = -force.Fr(k7);
+    y(2,1) = force.F_Ey(k7);
+    x = rot(DE.f(k7))*y;
+    DE.F_Ex(k7) = x(1);
+    DE.F_Ey(k7) = x(2);
+end
 
-DE.F_Dx = x(1);
-DE.F_Dy = x(2);
- 
-y(1,1) = -force.Fr(simulation.max_stress_index);
-y(2,1) = force.F_Ey(simulation.max_stress_index);
+%% Dimensionamento del membro CB:
+% Discretizziamo l membro CB in n punti, distanti l'uno dall'altro
+% la precisione di simulazione. Si valuterà il momento flettente per ciascuno
+% di questi punti
 
-x = rot(DE.f(simulation.max_stress_index))*y;
+CB.Wf = max(abs(force.C)/material.sigma*simulation.safety);
 
-DE.F_Ex = x(1);
-DE.F_Ey = x(2);
+% Si inserisce il termine di "(catalogo_sezioni(:,6) < CB.Wf)" così da
+% scegliere esclusivamente le sezione con modulo di resistenza a flessione
+% maggiore di quello richiesto
+[~, index] = min(abs(catalogo_sezioni(:,6) + (catalogo_sezioni(:,6) < CB.Wf) - CB.Wf) + 1*(catalogo_sezioni(:,6) < CB.Wf));
 
-% [~, index] = min(abs(catalogo_sezioni(:,3) - CB.Wf));
-index = 1;
+CB.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+CB.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
 
-DE.lato = catalogo_sezioni(index,1);
-DE.spessore = catalogo_sezioni(index,2);
-DE.area = catalogo_sezioni(index,3);
-DE.Wf = catalogo_sezioni(index,5);
-DE.m = DE.area*material.rho*DE.z;
-DE.J = (DE.m*DE.z^2)/12; % Momento d'inerzia rispetto al CIR
+if((max(abs(CB.F_Bx)./CB.area) + max(abs(force.C)./CB.Wf))*simulation.safety > material.sigma)
+    index = index + 2;
+end
 
-% Per il membro BA:
+% Si demanda al calcolo manuale la verifica della sezione al carico
+% combinato dovuto alla presenza di un carico assiale in concomitanza al
+% momento flettente
 
-y(1,1) = -force.F_Bx(simulation.max_stress_index);
-y(2,1) = -force.F_By(simulation.max_stress_index);
+CB.lato_lungo   = catalogo_sezioni(index,1);    % [m] Lato lungo
+CB.lato_corto   = catalogo_sezioni(index,2);    % [m] Lato corto
+CB.spessore     = catalogo_sezioni(index,3);    % [m] Spessore
+CB.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+CB.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+CB.m            = CB.area*material.rho*CB.z;    % [kg] Massa del membro
+CB.J            = (CB.m*CB.z^2)/12; % Momento d'inerzia rispetto al centro di massa
+CB.J_C          = (CB.m*CB.z^2)/3; % Momento d'inerzia rispetto al CIR
 
-x = rot(BA.f(simulation.max_stress_index))*y;
+%% Dimensionamento del membro DE:
 
-BA.F_Bx = x(1);
-BA.F_By = x(2);
+% In questa analisi il momento flettente è nullo, quindi si dovrebbe dimensionare il membro
+% esclusivamente a trazione. La sezione ha un modulo di resistenza a flessione di due 
+% ordini di grandezza superiore a quello richiesto per il momento di inerzia del pezzo
+% quando l'accelerazione angolare è massima
 
-y(1,1) = -force.F_Ax(simulation.max_stress_index);
-y(2,1) = -force.F_Ay(simulation.max_stress_index);
+DE.area = max(DE.F_Dx)./material.sigma*simulation.safety; 
+[~, index] = min(abs(catalogo_sezioni(:,4) - DE.area));
 
-x = rot(BA.f(simulation.max_stress_index))*y;
+DE.lato_lungo   = catalogo_sezioni(index,1);    % [m] Lato lungo
+DE.lato_corto   = catalogo_sezioni(index,2);    % [m] Lato corto
+DE.spessore     = catalogo_sezioni(index,3);    % [m] Spessore
+DE.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+DE.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+DE.m            = DE.area*material.rho*DE.z;    % [kg] Massa del membro
+DE.J            = (DE.m*DE.z^2)/12; % Momento d'inerzia rispetto al centro di massa
 
-BA.F_Ax = x(1);
-BA.F_Ay = x(2);
+%% Dimensionamento del membro BA:
 
-BA.area = BA.F_Ax/material.sigma*simulation.safety;
+% In questa analisi il momento flettente è nullo, quindi si dovrebbe dimensionare il membro
+% esclusivamente a trazione. La sezione ha un modulo di resistenza a flessione di due 
+% ordini di grandezza superiore a quello richiesto per il momento di inerzia del pezzo
+% quando l'accelerazione angolare è massima
 
-[~, index] = min(abs(catalogo_sezioni(:,3) - BA.area));
+BA.area = max(BA.F_Bx)./material.sigma*simulation.safety; 
+[~, index] = min(abs(catalogo_sezioni(:,4) - BA.area));
 
-BA.lato = catalogo_sezioni(index,1);
-BA.spessore = catalogo_sezioni(index,2);
-BA.area = catalogo_sezioni(index,3);
-BA.Wf = catalogo_sezioni(index,5);
-BA.m = BA.area*material.rho*BA.z;
-BA.J = (BA.m*BA.z^2)/12; % Momento d'inerzia rispetto al Centro di massa
+BA.lato_lungo   = catalogo_sezioni(index,1);    % [m]   Lato lungo
+BA.lato_corto   = catalogo_sezioni(index,2);    % [m]   Lato corto
+BA.spessore     = catalogo_sezioni(index,3);    % [m]   Spessore
+BA.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+BA.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+BA.m            = BA.area*material.rho*BA.z;    % [kg]  Massa del membro
+BA.J            = (BA.m*BA.z^2)/12;             % [Kg*m^2] Momento d'inerzia rispetto al centro di massa
 
-% Per il membro OAD si considera il membro rettificato, con applicate esclusivamente
-% le forze lungo x:
+%% Dimensionamento del membro OAD
 
-y(1,1) = -force.F_Ox(simulation.max_stress_index);
-y(2,1) = -force.F_Oy(simulation.max_stress_index);
+% Per il dimensionamento del membro OAD si considerano i segmenti OA e AD paralleli.
+% Applichiamo  invariate le sollecitazione ai capi, in tal caso non è soddisfatto l'equilibrio in statica
+% ma lo accettiamo come approssimazione
 
-x = rot(AO.f(simulation.max_stress_index))*y;
+% Verificato che i valori massimi delle singole forze occorrono negli stesi istanti di tempo 
+% si calcola il momento flettente massimo come combinazione lineare di questi valori
 
-AO.F_Ox = x(1);
-AO.F_Oy = x(2);
-
-y(1,1) = -force.F_Ox(simulation.max_stress_index);
-y(2,1) = -force.F_Oy(simulation.max_stress_index);
-
-y(1,1) = -force.F_Ax(simulation.max_stress_index);
-y(2,1) = -force.F_Ay(simulation.max_stress_index);
-
-x = rot(AO.f(simulation.max_stress_index))*y;
-
-AO.F_Ax = x(1);
-AO.F_Ay = x(2);
-
-
-
-y(1,1) = -force.F_Ax(simulation.max_stress_index);
-y(2,1) = -force.F_Ay(simulation.max_stress_index);
-
-x = rot(AD.f(simulation.max_stress_index))*y;
-
-AD.F_Ax = x(1);
-AD.F_Ay = x(2);
-
-y(1,1) = -force.F_Dx(simulation.max_stress_index);
-y(2,1) = -force.F_Dy(simulation.max_stress_index);
-
-x = rot(AD.f(simulation.max_stress_index))*y;
-
-AD.F_Dx = x(1);
-AD.F_Dy = x(2);
-
+% Senza prestare attenzione all'andamento del momento flettente, consci del fatto che si sta
+% dimensionando nel peggiore caso possibile, si procede con il dimensionamento
 OAD.z = AO.z + AD.z;
 OAD.l = (0:simulation.prec:OAD.z)';
-OAD.Mf = AO.F_Oy.*OAD.l - AD.F_Ay.*(OAD.l - AO.z).*(OAD.l > AO.z);
+OAD.Mf = max(AO.F_Oy).*OAD.l - max(AD.F_Ay).*(OAD.l - AO.z).*(OAD.l > AO.z);
 
-OAD.Wf = max(OAD.Mf)/material.sigma*simulation.safety;
+OAD.Wf = max(abs(OAD.Mf))/material.sigma*simulation.safety;
+[~, index] = min(abs((catalogo_sezioni(:,6) + ((catalogo_sezioni(:,6) < OAD.Wf))) - OAD.Wf));
 
-[~, index] = min(abs(catalogo_sezioni(:,3) - OAD.Wf));
+OAD.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+OAD.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
 
-OAD.lato = catalogo_sezioni(index,1);
-OAD.spessore = catalogo_sezioni(index,2);
-OAD.area = catalogo_sezioni(index,3);
-OAD.Wf = catalogo_sezioni(index,5);
-OAD.m = OAD.area*material.rho*(AO.z + AD.z);
-OAD.J_O = (OAD.m*OAD.z^2)/3; % Momento d'inerzia rispetto al CIR
+if((max(abs(AO.F_Ox)./OAD.area) + max(abs(OAD.Mf)./OAD.Wf))*simulation.safety > material.sigma)
+    index = index + 2;
+end
 
-AO.lato = OAD.lato;
-AO.spessore = OAD.spessore;
-AO.area = OAD.area;
-AO.Wf = OAD.Wf;
-AO.m = AO.area*material.rho*AO.z;
-AO.J_O = (AO.m*AO.z^2)/3; % Momento d'inerzia rispetto al CIR
+% Si demanda al calcolo manuale la verifica della sezione alla coesistenza
+% del momento flettente e del carico assiale sul membro
+OAD.lato_lungo   = catalogo_sezioni(index,1);    % [m]   Lato lungo
+OAD.lato_corto   = catalogo_sezioni(index,2);    % [m]   Lato corto
+OAD.spessore     = catalogo_sezioni(index,3);    % [m]   Spessore
+OAD.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+OAD.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+OAD.m            = OAD.area*material.rho*OAD.z;  % [kg]  Massa del membro
+OAD.J            = (OAD.m*OAD.z^2)/12;           % [Kg*m^2] Momento d'inerzia rispetto al centro di massa
+OAD.J_O          = (OAD.m*OAD.z^2)/3;            % [Kg*m^2] Momento d'inerzia rispetto al centro di massa
 
-AD.lato = OAD.lato;
-AD.spessore = OAD.spessore;
-AD.area = OAD.area;
-AD.Wf = OAD.Wf;
-AD.m = AD.area*material.rho*AD.z;
-AD.J = (AD.m*AD.z^2)/12; % Momento d'inerzia rispetto al centro di massa
+AO.lato_lungo   = catalogo_sezioni(index,1);    % [m]   Lato lungo
+AO.lato_corto   = catalogo_sezioni(index,2);    % [m]   Lato corto
+AO.spessore     = catalogo_sezioni(index,3);    % [m]   Spessore
+AO.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+AO.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+AO.m            = AO.area*material.rho*AO.z;    % [kg]  Massa del membro
+AO.J            = (AO.m*AO.z^2)/12;             % [Kg*m^2] Momento d'inerzia rispetto al centro di massa
+AO.J_O          = (AO.m*AO.z^2)/3;              % [Kg*m^2] Momento d'inerzia rispetto al CIR
+
+AD.lato_lungo   = catalogo_sezioni(index,1);    % [m]   Lato lungo
+AD.lato_corto   = catalogo_sezioni(index,2);    % [m]   Lato corto
+AD.spessore     = catalogo_sezioni(index,3);    % [m]   Spessore
+AD.area         = catalogo_sezioni(index,4);    % [m^2] Area della sezione
+AD.Wf           = catalogo_sezioni(index,6);    % [m^3] Modulo di resistenza a flessione
+AD.m            = AD.area*material.rho*AD.z;    % [kg]  Massa del membro
+AD.J            = (AD.m*AD.z^2)/12;             % [Kg*m^2] Momento d'inerzia rispetto al centro di massa
 
 % Per tale dimensionamento si sono trascurati gli effetti dovuti alla presenza di intagli
 % per poter ospitare le coppie rotoidali
 
-clear index x y
+clear index x y k7
