@@ -1,0 +1,15 @@
+setup();
+analisi_cinematica();
+ottimizzazione();
+analisi_cinematica();
+% render();
+analisi_dinamica();
+analisi_newton();
+importa_catalogo_sezioni_rettangolari_cave();
+dimensionamento_membri();
+analisi_dinamica2();
+importa_catalogo_riduttori();
+dimensionamento_riduttore();
+importa_catalogo_motori();
+dimensionamento_motore();
+dimensionamento_camma();
