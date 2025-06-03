@@ -90,11 +90,13 @@ CB.f = CB.f + pi;
 simulation.fsolve_options = optimset('Display','off'); % Opzioni per il solver dei sistemi lineari
 simulation.animation_fig_id = 1; % ID della figura per l'animazione
 simulation.pacco_fig_id = 2; % ID della figura per la cinematica del pacco
+simulation.coppia_plv_id = 3;
 simulation.pattino_fig_id = 4; % ID della figura per la cinematica del pattno
 simulation.camma_fig_id = 5; % ID della figura della camma
-simulation.coppia_plv_id = 3;
+simulation.pressure_angle_id = 6; % ID della figura dell'angolo di pressione della camma
 simulation.motor_plot_id = 100; % ID della figura che ospita la curva caratteristica del motore
 % Ad ogni motore corrispinde un ID diverso, sommando a 100 l'ID del motore
+
 
 color.CB = "#EDB120"; % Colore del membro CB
 color.BA = "#4DBEEE"; % Colore del membro BA

@@ -14,12 +14,11 @@ CB.z = CB.z * simulation.H / EF.corsa; % Nuova lunghezza della manovella
 CB.z = ceil(CB.z/simulation.prec)*simulation.prec;
 analisi_cinematica();
 
-disp("La corsa del pattino attualmente è: " + EF.corsa);
-
 % Si reitera il calcolo finché non è soddisfatta la condizione desiderata,
 % nei limiti della precisione del progetto
 
 if((EF.corsa < simulation.H - simulation.prec) + ( EF.corsa > simulation.H + simulation.prec))
     ottimizzazione;
+else
+    disp("La corsa del pattino attualmente è: " + EF.corsa);
 end
-
