@@ -1,0 +1,184 @@
+<!DOCTYPE AdamsMachinery>
+<AdamsMachinery>
+ <Wizard Name="Create Follower Motion">
+  <Page Name="Type">
+   <Element Name="Motion Name">
+    <Value>Follower_Motion_1</Value>
+   </Element>
+   <Element Name="Motion Type">
+    <Value>Time Based</Value>
+   </Element>
+   <Element Name="Method">
+    <Value>Function Builder</Value>
+   </Element>
+   <Element Name="Follower displacement">
+    <Value>Translational</Value>
+   </Element>
+  </Page>
+  <Page Name="Builder">
+   <Container Name="function">
+    <Element Name="Function Numbers">
+     <Value>2</Value>
+    </Element>
+    <Element Name="CONST1">
+     <Value>0</Value>
+    </Element>
+    <Element Name="CONST2">
+     <Value>0</Value>
+    </Element>
+    <Element Name="CONST3">
+     <Value>1</Value>
+    </Element>
+    <Element Name="CONST4">
+     <Value>0.55</Value>
+    </Element>
+    <Element Name="CONST5">
+     <Value>0.0</Value>
+    </Element>
+    <Element Name="CONST7">
+     <Value>1.0</Value>
+    </Element>
+    <Element Name="CONST8">
+     <Value>1</Value>
+    </Element>
+    <Element Name="CONST9">
+     <Value>0.55</Value>
+    </Element>
+    <Element Name="CONST10">
+     <Value>2</Value>
+    </Element>
+    <Element Name="CONST11">
+     <Value>0</Value>
+    </Element>
+    <Element Name="CONST12">
+     <Value>0.0</Value>
+    </Element>
+    <Element Name="CONST14">
+     <Value>2.0</Value>
+    </Element>
+    <Element Name="STEP1">
+     <Value>STEP</Value>
+    </Element>
+    <Element Name="STEP2">
+     <Value>STEP</Value>
+    </Element>
+   </Container>
+  </Page>
+  <Page Name="Visualisation">
+   <Container Name="func">
+    <Element Name="Type">
+     <Value>y=f(x)    (2D)</Value>
+    </Element>
+    <Element Name="View as">
+     <Value>Tabular Data</Value>
+    </Element>
+    <Element Name="Units">
+     <Value>length</Value>
+    </Element>
+    <Element Name="Linear extrapolation">
+     <Value>on</Value>
+    </Element>
+   </Container>
+  </Page>
+  <Page Name="Jerk/Acceleration">
+   <Element Name="Curve">
+    <Value>Jerk</Value>
+   </Element>
+   <Element Name="Type">
+    <Value>y=f(x)    (2D)</Value>
+   </Element>
+   <Element Name="View as">
+    <Value>Tabular Data</Value>
+   </Element>
+   <Element Name="Units">
+    <Value>length</Value>
+   </Element>
+   <Element Name="Spline Type">
+    <Value>AKISPL</Value>
+   </Element>
+   <Element Name="Linear extrapolation">
+    <Value>off</Value>
+   </Element>
+   <Element Name="Symbols">
+    <Value>on</Value>
+   </Element>
+   <Element Name="Memory Curves">
+    <Value>on</Value>
+   </Element>
+   <Element Name="Spline Curves">
+    <Value>on</Value>
+   </Element>
+   <Element Name="Slope Curves">
+    <Value>off</Value>
+   </Element>
+   <Element Name="Extrapolation Tails">
+    <Value>off</Value>
+   </Element>
+   <Element Name="Auto Scale Vertical">
+    <Value>on</Value>
+   </Element>
+   <Element Name="Auto Scale Horizontal">
+    <Value>on</Value>
+   </Element>
+  </Page>
+  <Page Name="Optimization">
+   <Container Name="optimize">
+    <Element Name="Function Numbers">
+     <Value>2</Value>
+    </Element>
+    <Element Name="CONST15">
+     <Value>2.0E-03</Value>
+    </Element>
+    <Element Name="CONST25">
+     <Value>2.0E-03</Value>
+    </Element>
+    <Element Name="Optimize Acceleration">
+     <Value>Acceleration</Value>
+    </Element>
+    <Element Name="Objective Value">
+     <Value>Maximum</Value>
+    </Element>
+    <Element Name="Optimize Maximize">
+     <Value>Minimize</Value>
+    </Element>
+    <Element Name="STEP1">
+     <Value>STEP</Value>
+    </Element>
+    <Element Name="STEP2">
+     <Value>STEP</Value>
+    </Element>
+    <Element Name="Step_toggle11">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle12">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle13">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle14">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle15">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle21">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle22">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle23">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle24">
+     <Value>off</Value>
+    </Element>
+    <Element Name="Step_toggle25">
+     <Value>off</Value>
+    </Element>
+   </Container>
+  </Page>
+  <Page Name="Optimized Displacement Curve"/>
+ </Wizard>
+</AdamsMachinery>

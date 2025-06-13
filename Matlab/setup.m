@@ -94,6 +94,7 @@ simulation.coppia_plv_id = 3;
 simulation.pattino_fig_id = 4; % ID della figura per la cinematica del pattno
 simulation.camma_fig_id = 5; % ID della figura della camma
 simulation.pressure_angle_id = 6; % ID della figura dell'angolo di pressione della camma
+simulation.error_fig_id = 7; % ID della figura dell'errore della chiusura
 simulation.motor_plot_id = 100; % ID della figura che ospita la curva caratteristica del motore
 % Ad ogni motore corrispinde un ID diverso, sommando a 100 l'ID del motore
 

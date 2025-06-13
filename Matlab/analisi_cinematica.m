@@ -25,10 +25,11 @@ chiusura = @(x,z1,z2,z3,z4,z5,z6,z8,z9,f2,f3,f7,f8,f9)[
 
 % Ciclo for per la soluzione delle equazioni di chiusura in ogni configurazione del sistema
 x0 = [AO.f(1), BA.f(1), DE.f(1), EF.z(1)];  % Vettore dei valori di guess iniziale per le incognite
+simulation.error(4,simulation.samples) = 0;
 
 for k1 = 1:simulation.samples
 
-    x = fsolve(@(x) chiusura(x, AO.z, OC.z, CB.z, BA.z, AD.z, DE.z, FG.z, GC.z, ...
+    [x, simulation.error(:,k1)] = fsolve(@(x) chiusura(x, AO.z, OC.z, CB.z, BA.z, AD.z, DE.z, FG.z, GC.z, ...
         OC.f, CB.f(k1), EF.f, FG.f, GC.f), x0, simulation.fsolve_options);
 
     x0 = x; % Aggiorna il valore di guess iniziale per la prossima iterazione

@@ -13,7 +13,9 @@ camma.xp = deriv3(camma.x,simulation.time);
 camma.xpp = deriv3(camma.xp, simulation.time);
 
 camma.theta_max_S = pi/6;   % Angolo di pressione ammesso nella fase di salita
-camma.theta_min_D = -pi/4;  % Angolo di pressione ammesso nella fase di discesa
+camma.theta_min_D = -pi/2;  % Angolo di pressione ammesso nella fase di discesa
+% Limite meno stringente dato che in discesa non sono applicate forze alla
+% punteria
 camma.Rr = 0.1; % [m] raggio della rotella
 
 % Calcolo del raggio di base minimo richiesto per limitare l'angolo di

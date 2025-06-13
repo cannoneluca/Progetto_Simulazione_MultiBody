@@ -44,8 +44,9 @@ riduttore.T2M = (trapz(simulation.time, abs(riduttore.V2.*riduttore.T2.^3))/ ...
 % solo in condizioni di duty cycle superiori al 60%
 
 riduttore.T2M = ceil(riduttore.T2M*simulation.safety*(riduttore.DC >= 60));    % arrotonda per eccesso
-riduttore.T2M = riduttore.T2M + riduttore.T2B*(riduttore.DC < 60); % [Nm] Coppia media
-
+% Se il duty cicle è minore di 60 non deve essere verificata la condizione
+% relativa alla coppia media RMS.
+riduttore.T2M = riduttore.T2M - riduttore.T2M*(riduttore.DC < 60); % [Nm] Coppia media
 
 % Inizializzo la colonna per il calcolo della coppia rms richiesta al motore
 catalogo_riduttori(:,9) = zeros(length(catalogo_riduttori(:,1)),1); 
