@@ -9,8 +9,8 @@
 
 camma.x = E.x - min(E.x);
 camma.alfa = (0:2*pi/length(camma.x):2*pi*(length(camma.x)-1)/length(camma.x))';
-camma.xp = deriv3(camma.x,simulation.time);
-camma.xpp = deriv3(camma.xp, simulation.time);
+camma.xp = deriv3(camma.x,camma.alfa);
+camma.xpp = deriv3(camma.xp, camma.alfa);
 
 camma.theta_max_S = pi/6;   % Angolo di pressione ammesso nella fase di salita
 camma.theta_min_D = -pi/2;  % Angolo di pressione ammesso nella fase di discesa
@@ -52,16 +52,11 @@ fclose(export);
 clear export ans
 %% Stampa dei risultati
 figure(simulation.camma_fig_id);
-polarplot(camma.alfa,camma.r);
+close(simulation.camma_fig_id);
+figure(simulation.camma_fig_id);
+polarplot([camma.alfa; camma.alfa(1)],[camma.r; camma.r(1)]);
 hold on;
-polarplot(camma.fi,camma.op);
+polarplot([camma.fi; camma.fi(1)],[camma.op;camma.op(1)]);
+polarplot([camma.alfa; camma.alfa(1)],ones(length(camma.alfa)+1)*camma.Rb);
 title("Profilo della camma");
-legend("traiettoria della rotella","profilo effettivo");
-
-%% Calcoli di analisi
-
-% Calcolo della massa della camma considerando lo spessore pari alla metà
-% della larghezza del pacco
-camma.m = (mean(camma.r))^2*pi*pacco.side*material.rho/2;
-% Calcolo dell'inerzia
-camma.J = 0.5*camma.m*mean(camma.r);
+legend("Profilo primitivo","Profilo effettivo","Raggio base");
