@@ -11,20 +11,20 @@ Nel modello è predisposta sia la fase di ottimizzazione del segmento CB, sia la
 sistema camma-punteria.
 
 ## Cartella media
-La cartella media contiene tutti i file esportati dalle simulazioni utilizzati per la presentazione che riassume i punti salienti della progettazione
+La cartella media contiene tutti i file esportati dalle simulazioni e utilizzati per la presentazione che riassume i punti salienti della progettazione.
 
 ## Cartella Simscape
-La cartella Simscape contiene la simulazione simscape multibody del sistema. Alcuni dei blocchi che la costituiscono fanno riferimento agli output degli script matlab, perciò prima di simulare il sistema p richiesta l'esecuzione del programma main.
+La cartella Simscape contiene la simulazione Simscape multibody del sistema. Alcuni dei blocchi che la costituiscono fanno riferimento agli output degli script Matlab, perciò prima di simulare il sistema è richiesta l'esecuzione del programma main.m.
 
 ## Workspace
 
-Al termine del comando "main" nel workspace troviamo diverse variabili, tutte organizzate in strutture:
+Al termine del comando "main" nel workspace si trovano diverse variabili, tutte organizzate in strutture:
 
 ### Coppie cinematiche
-Le variabili A, B, C, D, E, F, G sono ricavate dalla traccia del progetto e sono utili a determinare la lunghezza dei membri. SOno composte da due campi: x e y, corrispondenti alle coordinate cartesiane dei punti.
+Le variabili A, B, C, D, E, F, G sono ricavate dalla traccia del progetto e sono utili a determinare la lunghezza dei membri. Sono composte da due campi - x e y - corrispondenti alle coordinate cartesiane dei punti.
 
 ### Membri
-Le variabili CB, BA, AO, OB, AD, DE, EF, FG, GC rappresentano i vettori delle equazioni di chiusura. Entrambi sono composti da due campi: modulo z e fase f. Uno dei due è un vettroe che rappresenta i valori assunti durante il corso della simulazione.
+Le variabili CB, BA, AO, OB, AD, DE, EF, FG, GC rappresentano i vettori delle equazioni di chiusura. Esse sono composte da due campi: modulo z e fase f. Uno dei due campi è un vettore che rappresenta i valori assunti durante il corso della simulazione.
 I vettori sono stati scelti affinché abbiano solo uno dei due parametri variabili nel tempo.
 I membri del telaio (OC, FG, GC) sono fissi, quindi non variano. I campi sono:
 - z     : [m]   modulo del membro
@@ -39,22 +39,22 @@ I membri del telaio (OC, FG, GC) sono fissi, quindi non variano. I campi sono:
 - fpp   : [rad/s^2] accelerazione angolare del membro
 - F_?x  : [N]       forza applicata lungo l'asse x nel punto ?
 - F_?y  : [N]       forza applicata lungo l'asse y nel punto ?
-- Wf    : [N/m^2]   modulo di resistenza a flessione della sezione
+- Wf    : [m^3]     modulo di resistenza a flessione della sezione
 - area  : [m^2]     area della sezione
-- lato_lungo : [m]   lato lungo della sezione
-- lato_corto : [m]   lato corto della sezione
-- spessore : [m]     spessore della parete della sezione
-- massa : [kg]      massa del membro
+- lato_lungo : [m]  lato lungo della sezione
+- lato_corto : [m]  lato corto della sezione
+- spessore :   [m]  spessore della parete della sezione
+- massa :      [kg] massa del membro
 - J     : [kg*m^2]  momento d'inerzia del membro attorno al centro di massa
 - J_?   : [kg*m^2]  momento d'inerzia del membro attorno all'asse passante per il punto ?
 
 ### Membro OAD
-Il membro OAD è usato per poter dimensionare la sezione del membro, utile a causa della sua geometria.
+Il membro OAD è usato per poter dimensionare la sezione del membro, utile a gestire la sua geometria complessa.
 
 ### Camma
 La struttura camma contiene le informazioni principali ottenute dal dimensionamento della camma. I campi sono:
 
-- x     : la posizione de pattino assumendo come riferimento il punto morto inferiore raggiunto dal  pattino (punto E)
+- x             : [m]       la posizione del pattino, assumendo come riferimento il punto morto inferiore raggiunto dalla coppia cinematica E
 - alfa          : [rad]     vettore degli angoli su cui viene campionato il raggio della camma
 - xp            : [m/s]     vettore della velocità del pattino
 - xpp           : [m/s^2]   vettore dell'accelerazione del pattino
@@ -80,7 +80,7 @@ La struttura catalogo_riduttori contiene le informazioni sui riduttori utilizzat
 La struttura catalogo_sezioni contiene le informazioni sulle sezioni utilizzate per il dimensionamento del sistema. I campi sono descritti accuratamente nel file "importa_catalogo_sezioni_rettangolari_cave.m".
 
 ### Color
-La struttura color contiene le informazioni sui colori utilizzati per la visualizzazione del render del sistema
+La struttura color contiene le informazioni sui colori utilizzati per la visualizzazione del render del sistema.
 
 ### force
 La struttura force contiene le informazioni sulle forze del sistema. I campi sono:
@@ -89,27 +89,27 @@ La struttura force contiene le informazioni sulle forze del sistema. I campi son
 - C      : [N*m]     coppia alla manovella
 - F_?x   : [N]       componente x della forza scambiata nel punto ?
 - F_?y   : [N]       componente y della forza scambiata nel punto ?
-- C2     : [N*m]     coppia alla manovella considerando l'inerzia dei membri
+- C2     : [N*m]     coppia alla manovella, considerando l'inerzia dei membri
 
 ### Material
 La struttura material contiene le informazioni sul materiale utilizzato per il dimensionamento del sistema. I campi sono:
 - name : nome del materiale
 - rho  : [kg/m^3] densità
 - E    : [Pa]     modulo di Young
-- sigma: [Pa]   tensione di snervamento
+- sigma: [Pa]     tensione di snervamento
 
 ### Motore
 La struttura motore contiene le informazioni sul motore utilizzato per il dimensionamento del sistema. I campi sono:
-- Imp : [kg*m^2] momento d'inerzia
+- Im  : [kg*m^2]      momento d'inerzia
 - cv  : [N*m*s/rad]   coefficiente di attrito viscoso
 - ca  : [N*m]         coppia di attrito
 - C_a : [N*m]         coppia di attrito in funzione della velocità
 - C   : [N*m]         coppia richiesta
-- OK  : [bool]        True se il motore è idoneo, False altrimenti
-- V   : [rad/s]         velocità angolare
-- ID : [int]      identificativo del motore (posizione nel catalogo)
+- OK  : [bool]        True se il motore è idoneo, False in caso contrario
+- V   : [rad/s]       velocità angolare
+- ID  : [int]         identificativo del motore (posizione nel catalogo)
 - Peak_Stall_Torque : [N*m]     coppia di stallo di picco
-- Max_Speed_Torque  : [N*m]     coppia massima a velocità massim
+- Max_Speed_Torque  : [N*m]     coppia massima a velocità massima
 - Cont_Stall_Torque : [N*m]     coppia di stallo continua
 - Rated_Torque      : [N*m]     coppia nominale
 - Max_Torque_Speed  : [N*m]     velocità massima a cui è disponibile la coppia massima
@@ -117,7 +117,7 @@ La struttura motore contiene le informazioni sul motore utilizzato per il dimens
 - Max_Speed         : [rpm]     velocità massima
 - KT                : [N*m/A]   costante di coppia
 - R                 : [Ohm]     resistenza elettrica
-- omega             : [rpm]     Vettore delle velocità a cui è campionata la curva carattestica
+- omega             : [rpm]     vettore delle velocità a cui è campionata la curva carattestica
 - coppia_continua   : [N*m]     curva carattestica della coppia continua del motore
 - coppia_picco      : [N*m]     curva carattestica della coppia di picco del motore
 
@@ -153,13 +153,13 @@ La struttura riduttore contiene le informazioni sul riduttore scelto per il sist
 ### Simulation
 La struttura contiene tutte le informazioni necessarie per la simulazione del sistema. I campi sono:
 - omega             : [rad/s] velocità angolare della manovella CB
-- samples           : [adim] numero di campioni della simulazione
+- samples           : [adim]  numero di campioni della simulazione
 - g                 : [m/s^2] accelerazione di gravità
-- f_cou             : [adim] coefficiente di attrito tra pacco e piano
-- p                 : [adim] Porzione della corsa a cui è posizionato il pacco
-- H                 : [m] lunghezza della corsa richiesta
-- precision         : [adim] precisione del progetto
-- safety            : [adim] fattore di sicurezza del progetto
-- time              : [s] vettore degli istanti della simulazione
+- f_cou             : [adim]  coefficiente di attrito tra pacco e piano
+- p                 : [adim]  porzione della corsa a cui è posizionato il pacco
+- H                 : [m]     lunghezza della corsa richiesta
+- precision         : [adim]  precisione del progetto
+- safety            : [adim]  fattore di sicurezza del progetto
+- time              : [s]     vettore degli istanti della simulazione
 - fsolve_options    : opzioni per la funzione fsolve
- A corredo si trovano gli indici relative alle singole figure
+ A corredo si trovano gli indici relativi alle singole figure.
