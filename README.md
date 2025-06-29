@@ -1,5 +1,5 @@
 # Progetto_Simulazione_MultiBody
-Repository con il progetto del corso di simulazione multybody AA. 2024/2025
+Repository con il progetto del corso di simulazione multybody AA. 2024/2025.
 La cartella si compone di 4 sottocartelle, dedicate alle diverse sezioni del progetto.
 
 ## Cartella Matlab
